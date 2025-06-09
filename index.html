@@ -1,0 +1,4776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechFlow - Modern Web Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --text-gradient: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            --rainbow-gradient: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            --dark-color: #ecf0f1;
+            --light-color: #2c3e50;
+            background-color: #1a1a1a;
+            color: #ecf0f1;
+        }
+
+        .dark-mode .navbar {
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .dark-mode .features {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .feature-card {
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .dark-mode .gallery {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .footer {
+            background: #0f0f0f;
+        }
+
+        .dark-mode .login-container {
+            background: rgba(26, 26, 26, 0.95);
+            color: #ecf0f1;
+        }
+
+        /* Login Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+
+        .login-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .dark-mode .login-subtitle {
+            color: #ccc;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .dark-mode .auth-tabs {
+            background: #333;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .dark-mode .auth-tab {
+            color: #ccc;
+        }
+
+        .auth-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .dark-mode .form-input {
+            background: #333;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .dark-mode .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .dark-mode .password-toggle {
+            color: #ccc;
+        }
+
+        .auth-step {
+            display: none;
+        }
+
+        .auth-step.active {
+            display: block;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .google-btn {
+            background: #4285f4;
+            color: white;
+        }
+
+        .google-btn:hover:not(:disabled) {
+            background: #3367d6;
+            box-shadow: 0 10px 20px rgba(66, 133, 244, 0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #666;
+        }
+
+        .dark-mode .divider {
+            color: #ccc;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e1e5e9;
+        }
+
+        .dark-mode .divider::before,
+        .dark-mode .divider::after {
+            background: #555;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 5px;
+            display: none;
+            text-align: left;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 5px;
+            display: none;
+            text-align: left;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Spinner for loading states */
+        .btn-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        /* Settings Panel Styles */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .settings-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-container {
+            background: white;
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: settingsSlideUp 0.3s ease-out;
+        }
+
+        .dark-mode .settings-container {
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        @keyframes settingsSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .dark-mode .settings-header {
+            border-bottom-color: #555;
+        }
+
+        .settings-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .settings-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .settings-close {
+            color: #ccc;
+        }
+
+        .settings-close:hover {
+            color: #e74c3c;
+            transform: rotate(90deg);
+        }
+
+        .settings-section {
+            margin-bottom: 2rem;
+        }
+
+        .settings-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .settings-item {
+            border-color: #555;
+            background: #34495e;
+        }
+
+        .settings-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-item-info h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .settings-item-info p {
+            margin: 0.2rem 0 0 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .dark-mode .settings-item-info p {
+            color: #aaa;
+        }
+
+        .settings-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .settings-btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .settings-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .settings-btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .settings-btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .language-select {
+            padding: 8px 12px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+            min-width: 120px;
+            cursor: pointer;
+        }
+
+        .dark-mode .language-select {
+            background: #495057;
+            border-color: #555;
+            color: #ecf0f1;
+        }
+
+        .language-select option {
+            background: white;
+            color: var(--dark-color);
+        }
+
+        .dark-mode .language-select option {
+            background: #495057;
+            color: #ecf0f1;
+        }
+
+        /* Premium Coupon Styles */
+        .premium-coupon-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .coupon-input-settings {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 12px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .coupon-input-settings {
+            background: #495057;
+            border-color: #555;
+            color: #ecf0f1;
+        }
+
+        .coupon-validate-btn {
+            padding: 8px 12px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .coupon-validate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .coupon-validate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .coupon-status-settings {
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            text-align: center;
+            display: none;
+        }
+
+        .coupon-status-settings.success {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            display: block;
+        }
+
+        .coupon-status-settings.error {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            display: block;
+        }
+
+        .coupon-status-settings.expired {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            display: block;
+        }
+
+        /* Account Privacy Modal */
+        .privacy-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .privacy-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .privacy-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        .dark-mode .privacy-modal-content {
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .privacy-modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .privacy-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .privacy-option-btn {
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            background: white;
+            color: var(--dark-color);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .dark-mode .privacy-option-btn {
+            background: #34495e;
+            border-color: #555;
+            color: #ecf0f1;
+        }
+
+        .privacy-option-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .privacy-close-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .privacy-close-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* User Profile Section in Settings */
+        .user-profile-section {
+            background: var(--gradient);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-email {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Settings button in navbar */
+        .settings-nav-btn {
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .settings-nav-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        /* Logout button */
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main content - hidden by default */
+        .main-content {
+            display: none;
+        }
+
+        .main-content.visible {
+            display: block;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="0.8" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            margin-right: 1rem;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Floating Elements */
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .shape-2 {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -4s;
+        }
+
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -1s;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: var(--light-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background: var(--gradient);
+            color: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .submit-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Contact BarniSan Section */
+        .contact-barnisan-section {
+            background: var(--dark-color);
+            padding: 1rem 0;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .order-coupon-text {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .contact-barnisan {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: var(--rainbow-gradient);
+            background-size: 400% 400%;
+            animation: rainbow-gradient 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .contact-barnisan::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--rainbow-gradient);
+            background-size: 400% 400%;
+            animation: rainbow-gradient 3s ease infinite;
+            border-radius: 10px;
+            filter: blur(10px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .contact-barnisan:hover {
+            transform: scale(1.05);
+            text-decoration: none;
+        }
+
+        @keyframes rainbow-gradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Chat AI Styles */
+        .chat-toggle {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .chat-toggle .chat-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .chat-toggle.active .chat-icon {
+            transform: rotate(180deg);
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 100px;
+            left: 2rem;
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .dark-mode .chat-container {
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .chat-container.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .chat-settings-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .chat-settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .ai-settings {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .ai-settings.visible {
+            display: block;
+        }
+
+        .settings-group {
+            margin-bottom: 1rem;
+        }
+
+        .settings-label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #ff6b6b;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #fd79a8);
+            background-size: 400% 400%;
+            animation: rainbow-gradient 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .coupon-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .coupon-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .coupon-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .coupon-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .coupon-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .coupon-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .model-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .model-select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .model-select:enabled {
+            cursor: pointer;
+        }
+
+        .model-select option {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .style-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .style-select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .style-select:enabled {
+            cursor: pointer;
+        }
+
+        .style-select option {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .coupon-status {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.3rem;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .coupon-success {
+            background: rgba(39, 174, 96, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .coupon-error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .coupon-expired {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #f8f9fa;
+        }
+
+        .dark-mode .chat-messages {
+            background: #34495e;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .user-message {
+            background: var(--gradient);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            border: 1px solid #e1e5e9;
+            border-bottom-left-radius: 5px;
+            position: relative;
+        }
+
+        .dark-mode .ai-message {
+            background: #495057;
+            color: #ecf0f1;
+            border-color: #555;
+        }
+
+        .audio-player {
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            height: 30px;
+            border-radius: 15px;
+        }
+
+        .typing-animation {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 2px solid var(--primary-color);
+            white-space: nowrap;
+            animation: typing 0.5s steps(40, end), blink-cursor 0.75s infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-cursor {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: var(--primary-color); }
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid #e1e5e9;
+            background: white;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .dark-mode .chat-input-container {
+            background: #2c3e50;
+            border-top-color: #555;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 25px;
+            outline: none;
+            resize: none;
+            min-height: 20px;
+            max-height: 100px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .chat-input {
+            background: #495057;
+            border-color: #555;
+            color: #ecf0f1;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .chat-input:disabled {
+            background: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .dark-mode .chat-input:disabled {
+            background: #495057;
+            color: #adb5bd;
+        }
+
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .thinking-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+
+        .dark-mode .thinking-indicator {
+            color: #aaa;
+        }
+
+        .thinking-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .thinking-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: thinking 1.4s infinite ease-in-out;
+        }
+
+        .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
+        .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes thinking {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .tts-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tts-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .tts-label {
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .chat-locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            border-radius: 20px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.7; }
+        }
+
+        .lock-message {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .lock-submessage {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            max-width: 300px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 50%;
+            left: 2rem;
+            width: 60px;
+            height: 30px;
+            background: var(--dark-color);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle::after {
+            content: '🌙';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .dark-mode .dark-mode-toggle {
+            background: var(--primary-color);
+        }
+
+        .dark-mode .dark-mode-toggle::after {
+            content: '☀️';
+            transform: translateX(30px);
+        }
+
+        /* Modal for Gallery */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+        }
+
+        /* Chat Error and Retry */
+        .chat-error {
+            padding: 0.5rem;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            border-radius: 10px;
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+        }
+
+        .retry-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.95);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                backdrop-filter: blur(10px);
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .dark-mode-toggle {
+                left: 1rem;
+                width: 50px;
+                height: 25px;
+            }
+
+            .dark-mode-toggle::after {
+                width: 21px;
+                height: 21px;
+                font-size: 0.7rem;
+            }
+
+            .dark-mode .dark-mode-toggle::after {
+                transform: translateX(25px);
+            }
+
+            .login-container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .settings-container {
+                margin: 1rem;
+                padding: 1.5rem;
+                max-height: 90vh;
+            }
+
+            .cta-button {
+                margin: 0.5rem 0;
+                display: inline-block;
+            }
+
+            .auth-tabs {
+                flex-direction: column;
+            }
+
+            .chat-container {
+                width: calc(100% - 2rem);
+                left: 1rem;
+                right: 1rem;
+                height: 70vh;
+                bottom: 80px;
+            }
+
+            .chat-toggle {
+                bottom: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .scroll-top {
+                bottom: 80px;
+            }
+
+            .premium-coupon-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .coupon-input-settings {
+                min-width: auto;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-container">
+            <h2 class="login-title">Welcome to TechFlow</h2>
+            <p class="login-subtitle">Please sign in to continue</p>
+
+            <!-- Authentication Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="signinTab" onclick="switchAuthMode('signin')">Sign In</button>
+                <button class="auth-tab" id="signupTab" onclick="switchAuthMode('signup')">Sign Up</button>
+            </div>
+
+            <div class="error-message" id="authError"></div>
+            <div class="success-message" id="authSuccess"></div>
+
+            <!-- Sign In Form -->
+            <div class="auth-step active" id="signinForm">
+                <div class="input-group">
+                    <input type="email" class="form-input" id="signinEmail" placeholder="Email address" required>
+                </div>
+                                
+                <div class="input-group">
+                    <input type="password" class="form-input" id="signinPassword" placeholder="Password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('signinPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+
+                <button class="login-btn" id="signinBtn" onclick="signInWithEmail()">
+                    Sign In
+                </button>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <button class="login-btn google-btn" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div class="auth-step" id="signupForm">
+                <div class="input-group">
+                    <input type="text" class="form-input" id="signupName" placeholder="Full Name" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Email address" required>
+                </div>
+                                
+                <div class="input-group">
+                    <input type="password" class="form-input" id="signupPassword" placeholder="Password (min 6 characters)" required minlength="6">
+                    <button type="button" class="password-toggle" onclick="togglePassword('signupPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" class="form-input" id="signupConfirmPassword" placeholder="Confirm Password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('signupConfirmPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <button class="login-btn" id="signupBtn" onclick="signUpWithEmail()">
+                    Create Account
+                </button>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <button class="login-btn google-btn" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i> Sign up with Google
+                </button>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-step" id="forgotPasswordForm">
+                <p class="login-subtitle">Enter your email to reset your password</p>
+                                
+                <div class="input-group">
+                    <input type="email" class="form-input" id="resetEmail" placeholder="Email address" required>
+                </div>
+
+                <button class="login-btn" id="resetBtn" onclick="resetPassword()">
+                    Send Reset Email
+                </button>
+
+                <button class="login-btn" style="background: #6c757d; margin-top: 0.5rem;" onclick="showSignIn()">
+                    Back to Sign In
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-container">
+            <div class="settings-header">
+                <h2 class="settings-title">Settings</h2>
+                <button class="settings-close" id="settingsClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- User Profile Section -->
+            <div class="user-profile-section" id="userProfileSection">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-name" id="userName">User Name</div>
+                <div class="user-email" id="userEmail">user@email.com</div>
+            </div>
+
+            <!-- Premium Coupon Section -->
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class="fas fa-crown"></i>
+                    <span data-translate="premium-coupon">Premium Coupon</span>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <h4 data-translate="ai-coupon">AI Coupon</h4>
+                        <p data-translate="coupon-desc">Activate AI premium features</p>
+                    </div>
+                    <div class="premium-coupon-container">
+                        <input type="password" class="coupon-input-settings" id="settingsCouponInput" placeholder="Enter 4-digit coupon" maxlength="4">
+                        <button class="coupon-validate-btn" id="settingsCouponBtn">Validate</button>
+                    </div>
+                    <div class="coupon-status-settings" id="settingsCouponStatus"></div>
+                </div>
+            </div>
+
+            <!-- Language Settings -->
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class="fas fa-globe"></i>
+                    <span data-translate="language">Language</span>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <h4 data-translate="choose-language">Choose Language</h4>
+                        <p data-translate="language-desc">Select your preferred language</p>
+                    </div>
+                    <select class="language-select" id="languageSelect">
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                        <option value="tl">Tagalog</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Account Privacy -->
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class="fas fa-shield-alt"></i>
+                    <span data-translate="account-privacy">Account Privacy</span>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <h4 data-translate="security-settings">Security Settings</h4>
+                        <p data-translate="security-desc">Manage your account security</p>
+                    </div>
+                    <button class="settings-btn settings-btn-primary" onclick="openPrivacyModal()">
+                        <span data-translate="manage">Manage</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Account Deletion -->
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class="fas fa-user-minus"></i>
+                    <span data-translate="account-deletion">Account Deletion</span>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <h4 data-translate="delete-account">Delete Account</h4>
+                        <p data-translate="delete-desc">Permanently delete your account</p>
+                    </div>
+                    <button class="settings-btn settings-btn-danger" onclick="confirmDeleteAccount()">
+                        <span data-translate="delete">Delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Privacy Modal -->
+    <div class="privacy-modal" id="privacyModal">
+        <div class="privacy-modal-content">
+            <h3 class="privacy-modal-title" data-translate="account-security">Account Security</h3>
+            <p data-translate="privacy-desc">Choose what you'd like to update:</p>
+                                    
+            <div class="privacy-options">
+                <button class="privacy-option-btn" onclick="changePassword()">
+                    <i class="fas fa-key"></i>
+                    <span data-translate="change-password">Change Password</span>
+                </button>
+                <button class="privacy-option-btn" onclick="changeEmail()">
+                    <i class="fas fa-envelope"></i>
+                    <span data-translate="change-email">Change Email</span>
+                </button>
+            </div>
+                                    
+            <button class="privacy-close-btn" onclick="closePrivacyModal()">
+                <span data-translate="close">Close</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Navigation -->
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="logo">TechFlow</div>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#home" data-translate="home">Home</a></li>
+                    <li><a href="#features" data-translate="features">Features</a></li>
+                    <li><a href="#gallery" data-translate="gallery">Gallery</a></li>
+                    <li><a href="#contact" data-translate="contact">Contact</a></li>
+                    <li>
+                        <button class="settings-nav-btn" onclick="openSettings()">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dark Mode Toggle -->
+        <div class="dark-mode-toggle" id="darkModeToggle"></div>
+
+        <!-- Chat AI Toggle -->
+        <button class="chat-toggle" id="chatToggle">
+            <i class="fas fa-robot chat-icon"></i>
+        </button>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <!-- Chat Locked Overlay (visible by default) -->
+            <div class="chat-locked-overlay" id="chatLockedOverlay">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="lock-message">AI ASSISTANT LOCKED</div>
+                <div class="lock-submessage">
+                    Activate a valid coupon code in settings to unlock advanced AI features and start chatting with our technology expert AI.
+                </div>
+            </div>
+
+            <div class="chat-header">
+                <h3>AI ASSISTANT</h3>
+                <button class="chat-settings-btn" id="chatSettingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+                                    
+            <!-- AI Settings Panel -->
+            <div class="ai-settings" id="aiSettings">
+                <div class="settings-group">
+                    <div class="settings-label">Write Coupon:</div>
+                    <div class="coupon-container">
+                        <input type="password" class="coupon-input" id="couponInput" placeholder="Enter 4-digit coupon" maxlength="4">
+                        <button class="coupon-btn" id="couponBtn">Activate</button>
+                    </div>
+                    <div class="coupon-status" id="couponStatus"></div>
+                </div>
+                                                
+                <div class="settings-group">
+                    <div class="settings-label">AI Models:</div>
+                    <select class="model-select" id="modelSelect" disabled>
+                        <option value="">Please activate coupon first</option>
+                    </select>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-label">Text-to-Speech:</div>
+                    <div class="tts-toggle">
+                        <input type="checkbox" class="tts-checkbox" id="ttsEnabled" disabled>
+                        <label class="tts-label" for="ttsEnabled">Enable Voice Response</label>
+                    </div>
+                    <select class="style-select" id="styleSelect" disabled>
+                        <option value="">Select voice style</option>
+                        <option value="Narration">Narration</option>
+                        <option value="Promo">Promo</option>
+                        <option value="Newscast Formal">Newscast Formal</option>
+                        <option value="Meditative">Meditative</option>
+                        <option value="Sad">Sad</option>
+                        <option value="Angry">Angry</option>
+                        <option value="Conversational">Conversational</option>
+                        <option value="Newscast Casual">Newscast Casual</option>
+                        <option value="Furious">Furious</option>
+                        <option value="Sorrowful">Sorrowful</option>
+                        <option value="Terrified">Terrified</option>
+                        <option value="Inspirational">Inspirational</option>
+                    </select>
+                </div>
+            </div>
+                                    
+            <div class="chat-messages" id="chatMessages">
+                <div class="ai-message">
+                    🔒 <strong>AI Assistant Locked</strong><br><br>
+                    Welcome! I'm your AI assistant specialized in technology topics. To unlock my advanced features and start chatting, please activate an AI coupon in the settings above.<br><br>
+                    <strong>What I can help you with after activation:</strong><br>
+                    • Programming & Software Development<br>
+                    • Hardware & Computer Systems<br>
+                    • Cybersecurity & IT Support<br>
+                    • Web & Mobile Development<br>
+                    • AI & Machine Learning<br>
+                    • Cloud Computing & DevOps<br><br>
+                    Contact BarniSan to get your AI coupon code!
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <div class="chat-input-group">
+                    <textarea class="chat-input" id="chatInput" placeholder="Activate AI coupon to start chatting..." rows="1" disabled></textarea>
+                    <button class="chat-send-btn" id="chatSendBtn" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+                                    
+            <div class="hero-content">
+                <h1 id="hero-title" data-translate="hero-title">Welcome to the Future</h1>
+                <p data-translate="hero-subtitle">Experience cutting-edge design with modern features and stunning visual effects</p>
+                <a href="#features" class="cta-button">
+                    <span data-translate="explore">Explore Now</span> <i class="fas fa-arrow-right"></i>
+                </a>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> <span data-translate="logout">Logout</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <h2 class="section-title" data-translate="amazing-features">Amazing Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 data-translate="lightning-fast">Lightning Fast</h3>
+                        <p data-translate="lightning-desc">Optimized performance with cutting-edge technology for the best user experience.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 data-translate="mobile-first">Mobile First</h3>
+                        <p data-translate="mobile-desc">Responsive design that looks perfect on all devices and screen sizes.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 data-translate="secure">Secure</h3>
+                        <p data-translate="secure-desc">Built with security in mind to protect your data and ensure privacy.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 data-translate="beautiful-design">Beautiful Design</h3>
+                        <p data-translate="design-desc">Modern and clean design with attention to every detail and user interaction.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="feature-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3 data-translate="customizable">Customizable</h3>
+                        <p data-translate="custom-desc">Highly customizable components that adapt to your specific needs.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 data-translate="analytics">Analytics</h3>
+                        <p data-translate="analytics-desc">Comprehensive analytics to track performance and user engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery" id="gallery">
+            <div class="container">
+                <h2 class="section-title" data-translate="our-gallery">Our Gallery</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-aos="zoom-in"
+                         style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500')">
+                        <div class="gallery-overlay">
+                            <h3 data-translate="web-development">Web Development</h3>
+                            <p data-translate="modern-web">Modern web solutions</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"
+                         style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500')">
+                        <div class="gallery-overlay">
+                            <h3 data-translate="data-analytics">Data Analytics</h3>
+                            <p data-translate="insightful-data">Insightful data visualization</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"
+                         style="background-image: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500')">
+                        <div class="gallery-overlay">
+                            <h3 data-translate="mobile-apps">Mobile Apps</h3>
+                            <p data-translate="cross-platform">Cross-platform development</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300"
+                         style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500')">
+                        <div class="gallery-overlay">
+                            <h3 data-translate="ui-ux">UI/UX Design</h3>
+                            <p data-translate="beautiful-ui">Beautiful user interfaces</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400"
+                         style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500')">
+                        <div class="gallery-overlay">
+                            <h3 data-translate="cloud-solutions">Cloud Solutions</h3>
+                            <p data-translate="scalable-cloud">Scalable cloud infrastructure</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500"
+                         style="background-image: url('https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=500')">
+                        <div class="gallery-overlay">
+                            <h3 data-translate="ai-ml">AI & Machine Learning</h3>
+                            <p data-translate="intelligent-automation">Intelligent automation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal for Gallery -->
+        <div id="imageModal" class="modal">
+            <span class="close">&times;</span>
+            <div class="modal-content">
+                <img id="modal-image" src="" alt="">
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title" style="color: white;" data-translate="get-in-touch">Get In Touch</h2>
+                <form class="contact-form" data-aos="fade-up" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Your Name" data-translate-placeholder="your-name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Your Email" data-translate-placeholder="your-email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="6" id="message" placeholder="Your Message" data-translate-placeholder="your-message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span data-translate="send-message">Send Message</span> <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <h3>TechFlow</h3>
+                    <p data-translate="creating-amazing">Creating amazing web experiences</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                </div>
+                <p>&copy; 2024 TechFlow. All rights reserved.</p>
+            </div>
+                                    
+            <!-- Contact BarniSan Section -->
+            <div class="contact-barnisan-section">
+                <div class="order-coupon-text" data-translate="order-coupon">Order Coupon ↓</div>
+                <a href="https://wa.me/639454488235" class="contact-barnisan" target="_blank">Contact BarniSan</a>
+            </div>
+        </footer>
+
+        <!-- Scroll to Top Button -->
+        <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://js.puter.com/v2/"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            sendPasswordResetEmail,
+            onAuthStateChanged,
+            signOut,
+            updateProfile,
+            updatePassword,
+            updateEmail,
+            deleteUser,
+            reauthenticateWithCredential,
+            EmailAuthProvider
+        } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            getDoc,
+            doc,
+            updateDoc,
+            query,
+            where,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqNxM_clUk_eVaWpHxadehHEl5EpFXndU",
+            authDomain: "techlogintest.firebaseapp.com",
+            projectId: "techlogintest",
+            storageBucket: "techlogintest.firebasestorage.app",
+            messagingSenderId: "513584121201",
+            appId: "1:513584121201:web:50f12f8a39bca4ca85e2d0",
+            measurementId: "G-HP3N62G59N"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // Make auth and db globally available
+        window.auth = auth;
+        window.db = db;
+        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.signInWithPopup = signInWithPopup;
+        window.GoogleAuthProvider = GoogleAuthProvider;
+        window.googleProvider = googleProvider;
+        window.sendPasswordResetEmail = sendPasswordResetEmail;
+        window.signOut = signOut;
+        window.updateProfile = updateProfile;
+        window.updatePassword = updatePassword;
+        window.updateEmail = updateEmail;
+        window.deleteUser = deleteUser;
+        window.reauthenticateWithCredential = reauthenticateWithCredential;
+        window.EmailAuthProvider = EmailAuthProvider;
+
+        // Device ID management
+        function generateDeviceId() {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                // Generate a unique device ID using current timestamp and random string
+                deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('deviceId', deviceId);
+            }
+            return deviceId;
+        }
+
+        window.generateDeviceId = generateDeviceId;
+
+        // Language translations
+        const translations = {
+            en: {
+                'premium-coupon': 'Premium Coupon',
+                'ai-coupon': 'AI Coupon',
+                'coupon-desc': 'Activate AI premium features',
+                'language': 'Language',
+                'choose-language': 'Choose Language',
+                'language-desc': 'Select your preferred language',
+                'account-privacy': 'Account Privacy',
+                'security-settings': 'Security Settings',
+                'security-desc': 'Manage your account security',
+                'manage': 'Manage',
+                'account-deletion': 'Account Deletion',
+                'delete-account': 'Delete Account',
+                'delete-desc': 'Permanently delete your account',
+                'delete': 'Delete',
+                'account-security': 'Account Security',
+                'privacy-desc': 'Choose what you\'d like to update:',
+                'change-password': 'Change Password',
+                'change-email': 'Change Email',
+                'close': 'Close',
+                'home': 'Home',
+                'features': 'Features',
+                'gallery': 'Gallery',
+                'contact': 'Contact',
+                'logout': 'Logout',
+                'hero-title': 'Welcome to the Future',
+                'hero-subtitle': 'Experience cutting-edge design with modern features and stunning visual effects',
+                'explore': 'Explore Now',
+                'amazing-features': 'Amazing Features',
+                'lightning-fast': 'Lightning Fast',
+                'lightning-desc': 'Optimized performance with cutting-edge technology for the best user experience.',
+                'mobile-first': 'Mobile First',
+                'mobile-desc': 'Responsive design that looks perfect on all devices and screen sizes.',
+                'secure': 'Secure',
+                'secure-desc': 'Built with security in mind to protect your data and ensure privacy.',
+                'beautiful-design': 'Beautiful Design',
+                'design-desc': 'Modern and clean design with attention to every detail and user interaction.',
+                'customizable': 'Customizable',
+                'custom-desc': 'Highly customizable components that adapt to your specific needs.',
+                'analytics': 'Analytics',
+                'analytics-desc': 'Comprehensive analytics to track performance and user engagement.',
+                'our-gallery': 'Our Gallery',
+                'web-development': 'Web Development',
+                'modern-web': 'Modern web solutions',
+                'data-analytics': 'Data Analytics',
+                'insightful-data': 'Insightful data visualization',
+                'mobile-apps': 'Mobile Apps',
+                'cross-platform': 'Cross-platform development',
+                'ui-ux': 'UI/UX Design',
+                'beautiful-ui': 'Beautiful user interfaces',
+                'cloud-solutions': 'Cloud Solutions',
+                'scalable-cloud': 'Scalable cloud infrastructure',
+                'ai-ml': 'AI & Machine Learning',
+                'intelligent-automation': 'Intelligent automation',
+                'get-in-touch': 'Get In Touch',
+                'your-name': 'Your Name',
+                'your-email': 'Your Email',
+                'your-message': 'Your Message',
+                'send-message': 'Send Message',
+                'creating-amazing': 'Creating amazing web experiences',
+                'order-coupon': 'Order Coupon ↓'
+            },
+            ru: {
+                'premium-coupon': 'Премиум купон',
+                'ai-coupon': 'ИИ Купон',
+                'coupon-desc': 'Активировать премиум возможности ИИ',
+                'language': 'Язык',
+                'choose-language': 'Выберите язык',
+                'language-desc': 'Выберите предпочитаемый язык',
+                'account-privacy': 'Конфиденциальность аккаунта',
+                'security-settings': 'Настройки безопасности',
+                'security-desc': 'Управление безопасностью аккаунта',
+                'manage': 'Управлять',
+                'account-deletion': 'Удаление аккаунта',
+                'delete-account': 'Удалить аккаунт',
+                'delete-desc': 'Навсегда удалить ваш аккаунт',
+                'delete': 'Удалить',
+                'account-security': 'Безопасность аккаунта',
+                'privacy-desc': 'Выберите что хотите обновить:',
+                'change-password': 'Изменить пароль',
+                'change-email': 'Изменить email',
+                'close': 'Закрыть',
+                'home': 'Главная',
+                'features': 'Возможности',
+                'gallery': 'Галерея',
+                'contact': 'Контакты',
+                'logout': 'Выйти',
+                'hero-title': 'Добро пожаловать в будущее',
+                'hero-subtitle': 'Испытайте передовой дизайн с современными функциями и потрясающими визуальными эффектами',
+                'explore': 'Исследовать',
+                'amazing-features': 'Удивительные возможности',
+                'lightning-fast': 'Молниеносно быстрый',
+                'lightning-desc': 'Оптимизированная производительность с передовыми технологиями для лучшего пользовательского опыта.',
+                'mobile-first': 'Мобильный первый',
+                'mobile-desc': 'Адаптивный дизайн, который идеально выглядит на всех устройствах и размерах экрана.',
+                'secure': 'Безопасный',
+                'secure-desc': 'Создан с учетом безопасности для защиты ваших данных и обеспечения конфиденциальности.',
+                'beautiful-design': 'Красивый дизайн',
+                'design-desc': 'Современный и чистый дизайн с вниманием к каждой детали и взаимодействию с пользователем.',
+                'customizable': 'Настраиваемый',
+                'custom-desc': 'Высоко настраиваемые компоненты, которые адаптируются к вашим конкретным потребностям.',
+                'analytics': 'Аналитика',
+                'analytics-desc': 'Комплексная аналитика для отслеживания производительности и вовлеченности пользователей.',
+                'our-gallery': 'Наша галерея',
+                'web-development': 'Веб-разработка',
+                'modern-web': 'Современные веб-решения',
+                'data-analytics': 'Анализ данных',
+                'insightful-data': 'Информативная визуализация данных',
+                'mobile-apps': 'Мобильные приложения',
+                'cross-platform': 'Кроссплатформенная разработка',
+                'ui-ux': 'UI/UX дизайн',
+                'beautiful-ui': 'Красивые пользовательские интерфейсы',
+                'cloud-solutions': 'Облачные решения',
+                'scalable-cloud': 'Масштабируемая облачная инфраструктура',
+                'ai-ml': 'ИИ и машинное обучение',
+                'intelligent-automation': 'Интеллектуальная автоматизация',
+                'get-in-touch': 'Связаться с нами',
+                'your-name': 'Ваше имя',
+                'your-email': 'Ваш email',
+                'your-message': 'Ваше сообщение',
+                'send-message': 'Отправить сообщение',
+                'creating-amazing': 'Создание удивительных веб-приложений',
+                'order-coupon': 'Заказать купон ↓'
+            },
+            tl: {
+                'premium-coupon': 'Premium Coupon',
+                'ai-coupon': 'AI Coupon',
+                'coupon-desc': 'I-activate ang mga premium features ng AI',
+                'language': 'Wika',
+                'choose-language': 'Pumili ng Wika',
+                'language-desc': 'Piliin ang inyong gustong wika',
+                'account-privacy': 'Privacy ng Account',
+                'security-settings': 'Mga Setting ng Security',
+                'security-desc': 'Pamahalaan ang security ng inyong account',
+                'manage': 'Pamahalaan',
+                'account-deletion': 'Pagtanggal ng Account',
+                'delete-account': 'Tanggalin ang Account',
+                'delete-desc': 'Permanenteng tanggalin ang inyong account',
+                'delete': 'Tanggalin',
+                'account-security': 'Security ng Account',
+                'privacy-desc': 'Piliin kung ano ang gusto ninyong i-update:',
+                'change-password': 'Palitan ang Password',
+                'change-email': 'Palitan ang Email',
+                'close': 'Isara',
+                'home': 'Home',
+                'features': 'Features',
+                'gallery': 'Gallery',
+                'contact': 'Contact',
+                'logout': 'Logout',
+                'hero-title': 'Maligayang Pagdating sa Hinaharap',
+                'hero-subtitle': 'Maranasan ang makabagong disenyo na may mga modernong feature at nakakamangha na visual effects',
+                'explore': 'Tuklasin',
+                'amazing-features': 'Nakakamangha na Features',
+                'lightning-fast': 'Napakabilis',
+                'lightning-desc': 'Optimized na performance na may pinakabagong teknolohiya para sa pinakamahusay na karanasan ng user.',
+                'mobile-first': 'Mobile Una',
+                'mobile-desc': 'Responsive na disenyo na perpekto sa lahat ng device at laki ng screen.',
+                'secure': 'Secure',
+                'secure-desc': 'Ginawa na may security sa isip upang protektahan ang inyong data at tiyakin ang privacy.',
+                'beautiful-design': 'Magandang Disenyo',
+                'design-desc': 'Modernong at malinis na disenyo na may pansin sa bawat detalye at pakikipag-ugnayan sa user.',
+                'customizable': 'Customizable',
+                'custom-desc': 'Mataas na customizable na mga component na umaangkop sa inyong mga pangangailangan.',
+                'analytics': 'Analytics',
+                'analytics-desc': 'Komprehensibong analytics para subaybayan ang performance at engagement ng user.',
+                'our-gallery': 'Aming Gallery',
+                'web-development': 'Web Development',
+                'modern-web': 'Modernong web solutions',
+                'data-analytics': 'Data Analytics',
+                'insightful-data': 'Nakakalinaw na data visualization',
+                'mobile-apps': 'Mobile Apps',
+                'cross-platform': 'Cross-platform development',
+                'ui-ux': 'UI/UX Design',
+                'beautiful-ui': 'Magagandang user interfaces',
+                'cloud-solutions': 'Cloud Solutions',
+                'scalable-cloud': 'Scalable na cloud infrastructure',
+                'ai-ml': 'AI & Machine Learning',
+                'intelligent-automation': 'Intelligent automation',
+                'get-in-touch': 'Makipag-ugnayan',
+                'your-name': 'Inyong Pangalan',
+                'your-email': 'Inyong Email',
+                'your-message': 'Inyong Mensahe',
+                'send-message': 'Ipadala ang Mensahe',
+                'creating-amazing': 'Lumilikha ng napakagagandang web experiences',
+                'order-coupon': 'Mag-order ng Coupon ↓'
+            }
+        };
+
+        // Translation system
+        class TranslationSystem {
+            constructor() {
+                this.currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+                this.loadLanguage(this.currentLanguage);
+            }
+
+            loadLanguage(language) {
+                this.currentLanguage = language;
+                localStorage.setItem('selectedLanguage', language);
+                this.updateTexts();
+                this.updatePlaceholders();
+            }
+
+            updateTexts() {
+                const elementsWithTranslate = document.querySelectorAll('[data-translate]');
+                elementsWithTranslate.forEach(element => {
+                    const key = element.getAttribute('data-translate');
+                    if (translations[this.currentLanguage] && translations[this.currentLanguage][key]) {
+                        element.textContent = translations[this.currentLanguage][key];
+                    }
+                });
+            }
+
+            updatePlaceholders() {
+                const elementsWithPlaceholder = document.querySelectorAll('[data-translate-placeholder]');
+                elementsWithPlaceholder.forEach(element => {
+                    const key = element.getAttribute('data-translate-placeholder');
+                    if (translations[this.currentLanguage] && translations[this.currentLanguage][key]) {
+                        element.placeholder = translations[this.currentLanguage][key];
+                    }
+                });
+            }
+
+            changeLanguage(language) {
+                this.loadLanguage(language);
+                                
+                // Update the language selector
+                const languageSelect = document.getElementById('languageSelect');
+                if (languageSelect) {
+                    languageSelect.value = language;
+                }
+            }
+        }
+
+        // Initialize translation system
+        window.translationSystem = new TranslationSystem();
+
+        // Settings System
+        class SettingsSystem {
+            constructor() {
+                this.initializeSettings();
+            }
+
+            initializeSettings() {
+                // Language selector
+                const languageSelect = document.getElementById('languageSelect');
+                if (languageSelect) {
+                    languageSelect.value = window.translationSystem.currentLanguage;
+                    languageSelect.addEventListener('change', (e) => {
+                        window.translationSystem.changeLanguage(e.target.value);
+                    });
+                }
+
+                // Settings close button
+                const settingsClose = document.getElementById('settingsClose');
+                if (settingsClose) {
+                    settingsClose.addEventListener('click', () => {
+                        this.closeSettings();
+                    });
+                }
+
+                // Close settings when clicking outside
+                const settingsOverlay = document.getElementById('settingsOverlay');
+                if (settingsOverlay) {
+                    settingsOverlay.addEventListener('click', (e) => {
+                        if (e.target === settingsOverlay) {
+                            this.closeSettings();
+                        }
+                    });
+                }
+
+                // Initialize Premium Coupon feature
+                this.initializePremiumCoupon();
+            }
+
+            initializePremiumCoupon() {
+                const settingsCouponBtn = document.getElementById('settingsCouponBtn');
+                if (settingsCouponBtn) {
+                    settingsCouponBtn.addEventListener('click', () => {
+                        this.validatePremiumCoupon();
+                    });
+                }
+
+                // Enter key support for coupon input
+                const settingsCouponInput = document.getElementById('settingsCouponInput');
+                if (settingsCouponInput) {
+                    settingsCouponInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.validatePremiumCoupon();
+                        }
+                    });
+
+                    // Auto-format input to uppercase and limit to 4 digits
+                    settingsCouponInput.addEventListener('input', (e) => {
+                        let value = e.target.value.replace(/[^0-9]/g, '').substring(0, 4);
+                        e.target.value = value;
+                    });
+                }
+
+                // Load existing coupon status if available
+                this.loadCouponStatus();
+            }
+
+            async validatePremiumCoupon() {
+                const couponInput = document.getElementById('settingsCouponInput');
+                const couponBtn = document.getElementById('settingsCouponBtn');
+                const couponStatus = document.getElementById('settingsCouponStatus');
+                                
+                const couponCode = couponInput.value.trim();
+
+                // Validate coupon format (4 digits)
+                if (!/^\d{4}$/.test(couponCode)) {
+                    this.showCouponStatus('❌ Please enter a valid 4-digit coupon code.', 'error');
+                    return;
+                }
+
+                // Show loading
+                couponBtn.disabled = true;
+                couponBtn.textContent = 'Validating...';
+                this.showCouponStatus('🔄 Validating coupon...', '');
+
+                try {
+                    // Query Firestore to find the coupon document
+                    const couponsQuery = query(collection(db, 'coupons'), where('code', '==', couponCode));
+                    const querySnapshot = await getDocs(couponsQuery);
+
+                    if (querySnapshot.empty) {
+                        this.showCouponStatus('❌ Invalid coupon code.', 'error');
+                        return;
+                    }
+
+                    let couponDoc = null;
+                    let couponData = null;
+                    querySnapshot.forEach((doc) => {
+                        couponDoc = doc;
+                        couponData = doc.data();
+                    });
+
+                    const deviceId = generateDeviceId();
+
+                    // Check if coupon is already used
+                    if (couponData.isUsed) {
+                        this.showCouponStatus('❌ This coupon has already been used.', 'error');
+                        return;
+                    }
+
+                    // Check if coupon is bound to another device
+                    if (couponData.usedByDevice && couponData.usedByDevice !== deviceId) {
+                        this.showCouponStatus('❌ This coupon is already used on another device.', 'error');
+                        return;
+                    }
+
+                    // Check if coupon is expired
+                    if (couponData.expiresAt && couponData.expiresAt.toDate() < new Date()) {
+                        this.showCouponStatus('❌ This coupon has expired.', 'expired');
+                        return;
+                    }
+
+                    // Coupon is valid - show success and store in localStorage for AI system
+                    const expiryDate = couponData.expiresAt ? couponData.expiresAt.toDate() : null;
+                    let statusText = '✅ Valid Premium Coupon! ';
+                                        
+                    if (expiryDate) {
+                        statusText += `Expires: ${expiryDate.toLocaleDateString()}`;
+                    } else {
+                        statusText += 'No Expiration';
+                    }
+
+                    this.showCouponStatus(statusText, 'success');
+
+                    // Store validated coupon data for the AI system to use
+                    localStorage.setItem('validatedCouponCode', couponCode);
+                    localStorage.setItem('validatedCouponData', JSON.stringify({
+                        code: couponCode,
+                        expiresAt: expiryDate ? expiryDate.toISOString() : null,
+                        isUsed: couponData.isUsed,
+                        usedByDevice: couponData.usedByDevice
+                    }));
+
+                    // Mark as used if not already bound to this device
+                    if (!couponData.usedByDevice) {
+                        await updateDoc(couponDoc.ref, {
+                            isUsed: true,
+                            usedByDevice: deviceId,
+                            usedAt: new Date()
+                        });
+                    }
+
+                    // Clear the input
+                    couponInput.value = '';
+
+                    // Sync with AI chat system if available
+                    if (window.aiChat) {
+                        window.aiChat.syncWithSettingsCoupon(couponCode, couponData);
+                    }
+
+                } catch (error) {
+                    console.error('Error validating coupon:', error);
+                    this.showCouponStatus('❌ Error validating coupon. Please try again.', 'error');
+                } finally {
+                    couponBtn.disabled = false;
+                    couponBtn.textContent = 'Validate';
+                }
+            }
+
+            showCouponStatus(message, type) {
+                const couponStatus = document.getElementById('settingsCouponStatus');
+                couponStatus.textContent = message;
+                couponStatus.className = `coupon-status-settings ${type}`;
+            }
+
+            loadCouponStatus() {
+                const validatedCoupon = localStorage.getItem('validatedCouponCode');
+                const couponData = localStorage.getItem('validatedCouponData');
+                                
+                if (validatedCoupon && couponData) {
+                    try {
+                        const data = JSON.parse(couponData);
+                                                
+                        // Check if still valid
+                        if (data.expiresAt && new Date(data.expiresAt) < new Date()) {
+                            this.showCouponStatus('⏰ Your premium coupon has expired.', 'expired');
+                            // Clear expired data
+                            localStorage.removeItem('validatedCouponCode');
+                            localStorage.removeItem('validatedCouponData');
+                        } else {
+                            let statusText = '✅ Premium Coupon Active! ';
+                            if (data.expiresAt) {
+                                statusText += `Expires: ${new Date(data.expiresAt).toLocaleDateString()}`;
+                            } else {
+                                statusText += 'No Expiration';
+                            }
+                            this.showCouponStatus(statusText, 'success');
+                        }
+                    } catch (error) {
+                        console.error('Error loading coupon status:', error);
+                    }
+                }
+            }
+
+            openSettings() {
+                const settingsOverlay = document.getElementById('settingsOverlay');
+                if (settingsOverlay) {
+                    settingsOverlay.classList.add('visible');
+                }
+            }
+
+            closeSettings() {
+                const settingsOverlay = document.getElementById('settingsOverlay');
+                if (settingsOverlay) {
+                    settingsOverlay.classList.remove('visible');
+                }
+            }
+
+            updateUserProfile(user) {
+                const userAvatar = document.getElementById('userAvatar');
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+
+                if (userAvatar && userName && userEmail) {
+                    // Set avatar from user's display name or email initials
+                    const displayName = user.displayName || user.email;
+                    const initials = displayName.charAt(0).toUpperCase();
+                    userAvatar.textContent = initials;
+
+                    // Set user name
+                    userName.textContent = user.displayName || 'User';
+
+                    // Set user email
+                    userEmail.textContent = user.email || '';
+                }
+            }
+        }
+
+        // Initialize settings system
+        window.settingsSystem = new SettingsSystem();
+
+        // Global functions for settings
+        window.openSettings = function() {
+            window.settingsSystem.openSettings();
+        };
+
+        window.openPrivacyModal = function() {
+            const privacyModal = document.getElementById('privacyModal');
+            if (privacyModal) {
+                privacyModal.classList.add('visible');
+            }
+        };
+
+        window.closePrivacyModal = function() {
+            const privacyModal = document.getElementById('privacyModal');
+            if (privacyModal) {
+                privacyModal.classList.remove('visible');
+            }
+        };
+
+        window.changePassword = async function() {
+            closePrivacyModal();
+                                    
+            const newPassword = prompt('Enter your new password (minimum 6 characters):');
+            if (!newPassword || newPassword.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            const currentPassword = prompt('Enter your current password to confirm:');
+            if (!currentPassword) {
+                return;
+            }
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    // Re-authenticate user
+                    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                    await reauthenticateWithCredential(user, credential);
+                                                            
+                    // Update password
+                    await updatePassword(user, newPassword);
+                    alert('Password updated successfully!');
+                }
+            } catch (error) {
+                console.error('Error updating password:', error);
+                let errorMessage = 'Failed to update password. ';
+                                                
+                if (error.code === 'auth/wrong-password') {
+                    errorMessage += 'Current password is incorrect.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage += 'New password is too weak.';
+                } else {
+                    errorMessage += error.message;
+                }
+                                                
+                alert(errorMessage);
+            }
+        };
+
+        window.changeEmail = async function() {
+            closePrivacyModal();
+                                    
+            const newEmail = prompt('Enter your new email address:');
+            if (!newEmail || !validateEmail(newEmail)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const currentPassword = prompt('Enter your current password to confirm:');
+            if (!currentPassword) {
+                return;
+            }
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    // Re-authenticate user
+                    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                    await reauthenticateWithCredential(user, credential);
+                                                            
+                    // Update email
+                    await updateEmail(user, newEmail);
+                    alert('Email updated successfully!');
+                                                            
+                    // Update the UI
+                    window.settingsSystem.updateUserProfile(user);
+                }
+            } catch (error) {
+                console.error('Error updating email:', error);
+                let errorMessage = 'Failed to update email. ';
+                                                
+                if (error.code === 'auth/wrong-password') {
+                    errorMessage += 'Password is incorrect.';
+                } else if (error.code === 'auth/email-already-in-use') {
+                    errorMessage += 'This email is already in use.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage += 'Invalid email address.';
+                } else {
+                    errorMessage += error.message;
+                }
+                                                
+                alert(errorMessage);
+            }
+        };
+
+        window.confirmDeleteAccount = async function() {
+            const confirmation = confirm(
+                'Are you sure you want to permanently delete your account? This action cannot be undone.\n\n' +
+                'All your data will be lost permanently.'
+            );
+                                    
+            if (!confirmation) {
+                return;
+            }
+
+            const secondConfirmation = confirm(
+                'This is your final warning. Your account and all associated data will be permanently deleted.\n\n' +
+                'Type "DELETE" to confirm (case sensitive):'
+            );
+
+            if (!secondConfirmation) {
+                return;
+            }
+
+            const confirmText = prompt('Type "DELETE" to confirm account deletion:');
+            if (confirmText !== 'DELETE') {
+                alert('Account deletion cancelled. You must type "DELETE" exactly to confirm.');
+                return;
+            }
+
+            const password = prompt('Enter your current password to confirm account deletion:');
+            if (!password) {
+                alert('Account deletion cancelled. Password is required.');
+                return;
+            }
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    // Re-authenticate user
+                    const credential = EmailAuthProvider.credential(user.email, password);
+                    await reauthenticateWithCredential(user, credential);
+                                                            
+                    // Delete user account
+                    await deleteUser(user);
+                    alert('Your account has been permanently deleted.');
+                }
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                let errorMessage = 'Failed to delete account. ';
+                                                
+                if (error.code === 'auth/wrong-password') {
+                    errorMessage += 'Password is incorrect.';
+                } else if (error.code === 'auth/requires-recent-login') {
+                    errorMessage += 'Please log out and log back in, then try again.';
+                } else {
+                    errorMessage += error.message;
+                }
+                                                
+                alert(errorMessage);
+            }
+        };
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            const loginOverlay = document.getElementById('loginOverlay');
+            const mainContent = document.getElementById('mainContent');
+            const loading = document.getElementById('loading');
+
+            if (user) {
+                // User is signed in
+                console.log('User is authenticated:', user.email || user.displayName);
+                loginOverlay.classList.add('hidden');
+                mainContent.classList.add('visible');
+
+                // Update user profile in settings
+                window.settingsSystem.updateUserProfile(user);
+
+                // Hide loading after a delay
+                setTimeout(() => {
+                    loading.classList.add('hidden');
+                }, 1000);
+            } else {
+                // User is signed out
+                console.log('User is not authenticated');
+                loginOverlay.classList.remove('hidden');
+                mainContent.classList.remove('visible');
+                loading.classList.add('hidden');
+            }
+        });
+
+        // Authentication Functions
+        window.switchAuthMode = function(mode) {
+            const signinTab = document.getElementById('signinTab');
+            const signupTab = document.getElementById('signupTab');
+            const signinForm = document.getElementById('signinForm');
+            const signupForm = document.getElementById('signupForm');
+            const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+
+            // Hide all forms
+            signinForm.classList.remove('active');
+            signupForm.classList.remove('active');
+            forgotPasswordForm.classList.remove('active');
+
+            // Reset tabs
+            signinTab.classList.remove('active');
+            signupTab.classList.remove('active');
+
+            // Clear messages
+            clearMessages();
+
+            if (mode === 'signin') {
+                signinTab.classList.add('active');
+                signinForm.classList.add('active');
+            } else if (mode === 'signup') {
+                signupTab.classList.add('active');
+                signupForm.classList.add('active');
+            }
+        };
+
+        window.signInWithEmail = async function() {
+            const email = document.getElementById('signinEmail').value.trim();
+            const password = document.getElementById('signinPassword').value;
+            const signinBtn = document.getElementById('signinBtn');
+
+            clearMessages();
+
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            if (!password) {
+                showError('Please enter your password');
+                return;
+            }
+
+            // Show loading
+            signinBtn.innerHTML = '<span class="btn-spinner"></span>Signing In...';
+            signinBtn.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showSuccess('Signed in successfully!');
+            } catch (error) {
+                console.error('Error signing in:', error);
+                handleAuthError(error);
+            } finally {
+                signinBtn.innerHTML = 'Sign In';
+                signinBtn.disabled = false;
+            }
+        };
+
+        window.signUpWithEmail = async function() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const signupBtn = document.getElementById('signupBtn');
+
+            clearMessages();
+
+            if (!name) {
+                showError('Please enter your full name');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            // Show loading
+            signupBtn.innerHTML = '<span class="btn-spinner"></span>Creating Account...';
+            signupBtn.disabled = true;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                showSuccess('Account created successfully!');
+            } catch (error) {
+                console.error('Error creating account:', error);
+                handleAuthError(error);
+            } finally {
+                signupBtn.innerHTML = 'Create Account';
+                signupBtn.disabled = false;
+            }
+        };
+
+        window.signInWithGoogle = async function() {
+            clearMessages();
+
+            try {
+                await signInWithPopup(auth, googleProvider);
+                showSuccess('Signed in with Google successfully!');
+            } catch (error) {
+                console.error('Error signing in with Google:', error);
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    handleAuthError(error);
+                }
+            }
+        };
+
+        window.resetPassword = async function() {
+            const email = document.getElementById('resetEmail').value.trim();
+            const resetBtn = document.getElementById('resetBtn');
+
+            clearMessages();
+
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            // Show loading
+            resetBtn.innerHTML = '<span class="btn-spinner"></span>Sending...';
+            resetBtn.disabled = true;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showSuccess('Password reset email sent successfully! Check your inbox.');
+            } catch (error) {
+                console.error('Error sending password reset email:', error);
+                handleAuthError(error);
+            } finally {
+                resetBtn.innerHTML = 'Send Reset Email';
+                resetBtn.disabled = false;
+            }
+        };
+
+        window.showForgotPassword = function() {
+            document.getElementById('signinForm').classList.remove('active');
+            document.getElementById('forgotPasswordForm').classList.add('active');
+            clearMessages();
+        };
+
+        window.showSignIn = function() {
+            document.getElementById('forgotPasswordForm').classList.remove('active');
+            document.getElementById('signinForm').classList.add('active');
+            clearMessages();
+        };
+
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+                console.log('User signed out');
+
+                // Reset UI state
+                switchAuthMode('signin');
+                clearAllInputs();
+                clearMessages();
+                                                
+                // Close any open modals
+                window.settingsSystem.closeSettings();
+                closePrivacyModal();
+
+                // Reset AI chat system
+                if (window.aiChat) {
+                    window.aiChat.resetAfterLogout();
+                }
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        };
+
+        window.togglePassword = function(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        };
+
+        // Utility Functions
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('authError');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            const successElement = document.getElementById('authSuccess');
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+        }
+
+        function clearMessages() {
+            document.getElementById('authError').style.display = 'none';
+            document.getElementById('authSuccess').style.display = 'none';
+        }
+
+        function clearAllInputs() {
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => input.value = '');
+        }
+
+        function handleAuthError(error) {
+            let errorMessage = 'An error occurred. Please try again.';
+
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    errorMessage = 'An account with this email already exists.';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'Password is too weak. Please choose a stronger password.';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Please enter a valid email address.';
+                    break;
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    errorMessage = 'Invalid email or password.';
+                    break;
+                case 'auth/too-many-requests':
+                    errorMessage = 'Too many failed attempts. Please try again later.';
+                    break;
+                case 'auth/network-request-failed':
+                    errorMessage = 'Network error. Please check your connection.';
+                    break;
+                case 'auth/user-disabled':
+                    errorMessage = 'This account has been disabled.';
+                    break;
+                default:
+                    errorMessage = error.message || errorMessage;
+            }
+
+            showError(errorMessage);
+        }
+
+        // Enter key handlers
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const activeForm = document.querySelector('.auth-step.active');
+                if (activeForm) {
+                    if (activeForm.id === 'signinForm') {
+                        signInWithEmail();
+                    } else if (activeForm.id === 'signupForm') {
+                        signUpWithEmail();
+                    } else if (activeForm.id === 'forgotPasswordForm') {
+                        resetPassword();
+                    }
+                }
+            }
+        });
+
+        // AI Chat Functionality with Enhanced Security
+        class AIChatBot {
+            constructor() {
+                this.isOpen = false;
+                this.isTyping = false;
+                this.retryCount = 0;
+                this.maxRetries = 3;
+                this.isCouponActivated = false;
+                this.selectedModel = '';
+                this.selectedStyle = '';
+                this.ttsEnabled = false;
+                this.apiKey = 'ap2_67a4ab4c-b22b-41d3-a962-e463fada50e0';
+                this.deviceId = generateDeviceId();
+                this.couponExpiryTimer = null;
+                this.availableModels = [
+                    'google/gemini-2.5-flash-preview',
+                    'google/gemini-2.5-flash-preview:thinking',
+                    'google/gemini-2.0-flash-lite-001',
+                    'google/gemini-2.0-flash-001',
+                    'google/gemini-flash-1.5-8b',
+                    'google/gemini-flash-1.5',
+                    'google/gemini-pro-1.5',
+                    'google/gemini-pro',
+                    'meta-llama/llama-4-maverick',
+                    'meta-llama/llama-4-scout'
+                ];
+                this.initializeChat();
+                this.checkCouponStatus();
+            }
+
+            initializeChat() {
+                const chatToggle = document.getElementById('chatToggle');
+                const chatContainer = document.getElementById('chatContainer');
+                const chatInput = document.getElementById('chatInput');
+                const chatSendBtn = document.getElementById('chatSendBtn');
+                const chatSettingsBtn = document.getElementById('chatSettingsBtn');
+                const couponBtn = document.getElementById('couponBtn');
+                const ttsCheckbox = document.getElementById('ttsEnabled');
+
+                chatToggle.addEventListener('click', () => this.toggleChat());
+                chatSendBtn.addEventListener('click', () => this.sendMessage());
+                chatSettingsBtn.addEventListener('click', () => this.toggleSettings());
+                couponBtn.addEventListener('click', () => this.activateCoupon());
+                ttsCheckbox.addEventListener('change', (e) => this.toggleTTS(e.target.checked));
+
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (this.isCouponActivated) {
+                            this.sendMessage();
+                        }
+                    }
+                });
+
+                // Auto-resize textarea
+                chatInput.addEventListener('input', () => {
+                    chatInput.style.height = 'auto';
+                    chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+                });
+
+                // Model selection
+                const modelSelect = document.getElementById('modelSelect');
+                modelSelect.addEventListener('change', (e) => {
+                    this.selectedModel = e.target.value;
+                    this.saveSettings();
+                });
+
+                // Style selection
+                const styleSelect = document.getElementById('styleSelect');
+                styleSelect.addEventListener('change', (e) => {
+                    this.selectedStyle = e.target.value;
+                    this.saveSettings();
+                });
+
+                // Initialize locked state
+                this.lockAIAssistant();
+            }
+
+            // Sync with settings coupon validation
+            syncWithSettingsCoupon(couponCode, couponData) {
+                // If a valid coupon was validated in settings, sync it to the chat system
+                const couponInput = document.getElementById('couponInput');
+                couponInput.value = couponCode;
+                                
+                // Automatically activate it in the chat
+                this.processValidatedCoupon(couponCode, couponData);
+            }
+
+            async processValidatedCoupon(couponCode, couponData) {
+                try {
+                    // Check if coupon is expired
+                    if (couponData.expiresAt && couponData.expiresAt.toDate() < new Date()) {
+                        this.lockAIAssistant();
+                        this.showExpiryMessage('Your AI coupon has expired. Please activate a new coupon to continue.');
+                        return;
+                    }
+
+                    // Unlock AI features
+                    this.unlockAIAssistant();
+
+                    // Update coupon status in chat
+                    const couponStatus = document.getElementById('couponStatus');
+                    const expiryDate = couponData.expiresAt ? couponData.expiresAt.toDate() : null;
+                    let statusText = '✓ AI Coupon Activated via Settings!';
+                                                        
+                    if (expiryDate) {
+                        const timeRemaining = expiryDate.getTime() - Date.now();
+                        if (timeRemaining > 0) {
+                            statusText += ` (Expires: ${expiryDate.toLocaleString()})`;
+                            this.startExpiryTimer(timeRemaining);
+                        } else {
+                            this.lockAIAssistant();
+                            return;
+                        }
+                    } else {
+                        statusText += ' (No Expiration)';
+                    }
+
+                    couponStatus.innerHTML = statusText;
+                    couponStatus.className = 'coupon-status coupon-success';
+
+                    // Store activation data
+                    localStorage.setItem('aiActiveCouponCode', couponCode);
+                    localStorage.setItem('aiCouponActivationTime', Date.now().toString());
+                    localStorage.setItem('aiDeviceId', this.deviceId);
+
+                    // Clear coupon input in chat
+                    document.getElementById('couponInput').value = '';
+
+                    // Add success message to chat
+                    this.addMessage('🎉 AI Premium features activated via Settings! You can now chat with advanced AI models. What would you like to know about technology?', 'ai');
+
+                    this.saveSettings();
+
+                } catch (error) {
+                    console.error('Error processing validated coupon:', error);
+                }
+            }
+
+            lockAIAssistant() {
+                const chatLockedOverlay = document.getElementById('chatLockedOverlay');
+                const modelSelect = document.getElementById('modelSelect');
+                const styleSelect = document.getElementById('styleSelect');
+                const chatInput = document.getElementById('chatInput');
+                const chatSendBtn = document.getElementById('chatSendBtn');
+                const ttsCheckbox = document.getElementById('ttsEnabled');
+                const couponBtn = document.getElementById('couponBtn');
+                const couponStatus = document.getElementById('couponStatus');
+
+                // Show locked overlay
+                if (chatLockedOverlay) {
+                    chatLockedOverlay.style.display = 'flex';
+                }
+
+                // Disable all controls
+                modelSelect.disabled = true;
+                modelSelect.innerHTML = '<option value="">Please activate coupon first</option>';
+                                                
+                styleSelect.disabled = true;
+                                                
+                chatInput.disabled = true;
+                chatInput.placeholder = 'Activate AI coupon to start chatting...';
+                                                
+                chatSendBtn.disabled = true;
+                                                
+                ttsCheckbox.disabled = true;
+                ttsCheckbox.checked = false;
+                                                
+                couponBtn.disabled = false; // Keep coupon button enabled
+                                                
+                // Clear status
+                couponStatus.innerHTML = '';
+                couponStatus.className = 'coupon-status';
+
+                // Reset state
+                this.isCouponActivated = false;
+                this.selectedModel = '';
+                this.selectedStyle = '';
+                this.ttsEnabled = false;
+
+                // Clear coupon timer
+                if (this.couponExpiryTimer) {
+                    clearInterval(this.couponExpiryTimer);
+                    this.couponExpiryTimer = null;
+                }
+
+                // Clear storage
+                this.clearStoredSettings();
+            }
+
+            unlockAIAssistant() {
+                const chatLockedOverlay = document.getElementById('chatLockedOverlay');
+                const modelSelect = document.getElementById('modelSelect');
+                const styleSelect = document.getElementById('styleSelect');
+                const chatInput = document.getElementById('chatInput');
+                const chatSendBtn = document.getElementById('chatSendBtn');
+                const ttsCheckbox = document.getElementById('ttsEnabled');
+
+                // Hide locked overlay
+                if (chatLockedOverlay) {
+                    chatLockedOverlay.style.display = 'none';
+                }
+
+                // Enable all controls
+                modelSelect.disabled = false;
+                this.populateModelSelect();
+                                                
+                chatInput.disabled = false;
+                chatInput.placeholder = 'Ask me about technology...';
+                                                
+                chatSendBtn.disabled = false;
+                                                
+                ttsCheckbox.disabled = false;
+
+                this.isCouponActivated = true;
+            }
+
+            checkCouponStatus() {
+                // Check for validated coupon from settings first
+                const validatedCoupon = localStorage.getItem('validatedCouponCode');
+                if (validatedCoupon) {
+                    // Use the validated coupon from settings
+                    this.activateFromValidatedCoupon(validatedCoupon);
+                    return;
+                }
+
+                // Check stored coupon on page load
+                const savedCouponCode = localStorage.getItem('aiActiveCouponCode');
+                const savedDeviceId = localStorage.getItem('aiDeviceId');
+                const savedActivationTime = localStorage.getItem('aiCouponActivationTime');
+
+                // Validate device ID
+                if (savedDeviceId && savedDeviceId !== this.deviceId) {
+                    this.lockAIAssistant();
+                    return;
+                }
+
+                if (savedCouponCode && savedActivationTime) {
+                    // Verify the coupon is still valid
+                    this.verifyCouponValidity(savedCouponCode);
+                }
+            }
+
+            async activateFromValidatedCoupon(couponCode) {
+                try {
+                    // Query to find the correct coupon document
+                    const couponsQuery = query(collection(db, 'coupons'), where('code', '==', couponCode));
+                    const querySnapshot = await getDocs(couponsQuery);
+
+                    if (!querySnapshot.empty) {
+                        let couponData = null;
+                        querySnapshot.forEach((doc) => {
+                            couponData = doc.data();
+                        });
+                        this.syncWithSettingsCoupon(couponCode, couponData);
+                    }
+                } catch (error) {
+                    console.error('Error activating from validated coupon:', error);
+                }
+            }
+
+            async verifyCouponValidity(couponCode) {
+                try {
+                    // Query to find the correct coupon document
+                    const couponsQuery = query(collection(db, 'coupons'), where('code', '==', couponCode));
+                    const querySnapshot = await getDocs(couponsQuery);
+
+                    if (querySnapshot.empty) {
+                        this.lockAIAssistant();
+                        return;
+                    }
+
+                    let couponData = null;
+                    querySnapshot.forEach((doc) => {
+                        couponData = doc.data();
+                    });
+
+                    // Check if coupon is expired
+                    if (couponData.expiresAt && couponData.expiresAt.toDate() < new Date()) {
+                        this.lockAIAssistant();
+                        this.showExpiryMessage('Your AI coupon has expired. Please activate a new coupon to continue.');
+                        return;
+                    }
+
+                    // Check if coupon is still bound to this device
+                    if (couponData.usedByDevice !== this.deviceId) {
+                        this.lockAIAssistant();
+                        return;
+                    }
+
+                    // Coupon is still valid, activate AI
+                    this.reactivateFromStorage(couponData);
+
+                } catch (error) {
+                    console.error('Error verifying coupon:', error);
+                    this.lockAIAssistant();
+                }
+            }
+
+            reactivateFromStorage(couponData) {
+                const couponStatus = document.getElementById('couponStatus');
+
+                // Check expiry again as a double check
+                if (couponData.expiresAt && couponData.expiresAt.toDate() < new Date()) {
+                    this.lockAIAssistant();
+                    return;
+                }
+
+                this.unlockAIAssistant();
+
+                const expiryDate = couponData.expiresAt ? couponData.expiresAt.toDate() : null;
+                let statusText = '✓ AI Coupon Active';
+                                                
+                if (expiryDate) {
+                    const timeRemaining = expiryDate.getTime() - Date.now();
+                    if (timeRemaining > 0) {
+                        statusText += ` (Expires: ${expiryDate.toLocaleString()})`;
+                        this.startExpiryTimer(timeRemaining);
+                    } else {
+                        this.lockAIAssistant();
+                        return;
+                    }
+                } else {
+                    statusText += ' (No Expiration)';
+                }
+
+                couponStatus.innerHTML = statusText;
+                couponStatus.className = 'coupon-status coupon-success';
+
+                this.loadSettings();
+            }
+
+            startExpiryTimer(timeRemaining) {
+                // Clear any existing timer
+                if (this.couponExpiryTimer) {
+                    clearInterval(this.couponExpiryTimer);
+                }
+
+                // Set timer to check expiry
+                this.couponExpiryTimer = setTimeout(() => {
+                    this.lockAIAssistant();
+                    this.showExpiryMessage('Your AI coupon has expired. Please activate a new coupon to continue.');
+                }, timeRemaining);
+            }
+
+            showExpiryMessage(message) {
+                const couponStatus = document.getElementById('couponStatus');
+                couponStatus.innerHTML = '⏰ ' + message;
+                couponStatus.className = 'coupon-status coupon-expired';
+                                                
+                // Also add message to chat
+                this.addMessage('⏰ ' + message, 'ai');
+            }
+
+            toggleTTS(enabled) {
+                if (!this.isCouponActivated) {
+                    const ttsCheckbox = document.getElementById('ttsEnabled');
+                    ttsCheckbox.checked = false;
+                    return;
+                }
+
+                this.ttsEnabled = enabled;
+                const styleSelect = document.getElementById('styleSelect');
+                                                
+                if (enabled) {
+                    styleSelect.disabled = false;
+                    if (!this.selectedStyle) {
+                        this.selectedStyle = 'Conversational';
+                        styleSelect.value = this.selectedStyle;
+                    }
+                } else {
+                    styleSelect.disabled = true;
+                }
+                                                
+                this.saveSettings();
+            }
+
+            toggleChat() {
+                const chatToggle = document.getElementById('chatToggle');
+                const chatContainer = document.getElementById('chatContainer');
+
+                this.isOpen = !this.isOpen;
+                chatToggle.classList.toggle('active', this.isOpen);
+                chatContainer.classList.toggle('visible', this.isOpen);
+
+                if (this.isOpen && this.isCouponActivated) {
+                    document.getElementById('chatInput').focus();
+                }
+            }
+
+            toggleSettings() {
+                const aiSettings = document.getElementById('aiSettings');
+                aiSettings.classList.toggle('visible');
+            }
+
+            async activateCoupon() {
+                const couponInput = document.getElementById('couponInput');
+                const couponCode = couponInput.value.trim();
+                const couponStatus = document.getElementById('couponStatus');
+                const couponBtn = document.getElementById('couponBtn');
+
+                // Validate coupon format (4 digits)
+                if (!/^\d{4}$/.test(couponCode)) {
+                    couponStatus.innerHTML = '❌ Please enter a valid 4-digit coupon code.';
+                    couponStatus.className = 'coupon-status coupon-error';
+                    return;
+                }
+
+                // Show loading
+                couponStatus.innerHTML = '🔄 Validating coupon...';
+                couponStatus.className = 'coupon-status';
+                couponBtn.disabled = true;
+
+                try {
+                    // Query Firestore to find the coupon document
+                    const couponsQuery = query(collection(db, 'coupons'), where('code', '==', couponCode));
+                    const querySnapshot = await getDocs(couponsQuery);
+
+                    if (querySnapshot.empty) {
+                        couponStatus.innerHTML = '❌ Invalid coupon code.';
+                        couponStatus.className = 'coupon-status coupon-error';
+                        return;
+                    }
+
+                    let couponDoc = null;
+                    let couponData = null;
+                    querySnapshot.forEach((doc) => {
+                        couponDoc = doc;
+                        couponData = doc.data();
+                    });
+
+                    // Check if coupon is already used
+                    if (couponData.isUsed) {
+                        couponStatus.innerHTML = '❌ This coupon has already been used.';
+                        couponStatus.className = 'coupon-status coupon-error';
+                        return;
+                    }
+
+                    // Check if coupon is bound to another device
+                    if (couponData.usedByDevice && couponData.usedByDevice !== this.deviceId) {
+                        couponStatus.innerHTML = '❌ This coupon is already used on another device.';
+                        couponStatus.className = 'coupon-status coupon-error';
+                        return;
+                    }
+
+                    // Check if coupon is expired
+                    if (couponData.expiresAt && couponData.expiresAt.toDate() < new Date()) {
+                        couponStatus.innerHTML = '❌ This coupon has expired.';
+                        couponStatus.className = 'coupon-status coupon-error';
+                        return;
+                    }
+
+                    // Coupon is valid, mark as used
+                    await updateDoc(couponDoc.ref, {
+                        isUsed: true,
+                        usedByDevice: this.deviceId,
+                        usedAt: new Date()
+                    });
+
+                    // Unlock AI features
+                    this.unlockAIAssistant();
+
+                    const expiryDate = couponData.expiresAt ? couponData.expiresAt.toDate() : null;
+                    let statusText = '✓ AI Coupon Activated Successfully!';
+                                                        
+                    if (expiryDate) {
+                        const timeRemaining = expiryDate.getTime() - Date.now();
+                        if (timeRemaining > 0) {
+                            statusText += ` (Expires: ${expiryDate.toLocaleString()})`;
+                            this.startExpiryTimer(timeRemaining);
+                        }
+                    } else {
+                        statusText += ' (No Expiration)';
+                    }
+
+                    couponStatus.innerHTML = statusText;
+                    couponStatus.className = 'coupon-status coupon-success';
+
+                    // Store activation data
+                    localStorage.setItem('aiActiveCouponCode', couponCode);
+                    localStorage.setItem('aiCouponActivationTime', Date.now().toString());
+                    localStorage.setItem('aiDeviceId', this.deviceId);
+
+                    // Also store as validated coupon for settings sync
+                    localStorage.setItem('validatedCouponCode', couponCode);
+                    localStorage.setItem('validatedCouponData', JSON.stringify({
+                        code: couponCode,
+                        expiresAt: expiryDate ? expiryDate.toISOString() : null,
+                        isUsed: true,
+                        usedByDevice: this.deviceId
+                    }));
+
+                    // Clear coupon input
+                    couponInput.value = '';
+
+                    // Add success message to chat
+                    this.addMessage('🎉 AI Premium features unlocked! You can now chat with advanced AI models including Google\'s latest Gemini models and Meta\'s Llama 4. Text-to-Speech is also available - enable it in settings and choose a voice style. What would you like to know about technology?', 'ai');
+
+                    // Update settings panel if it exists
+                    if (window.settingsSystem) {
+                        window.settingsSystem.loadCouponStatus();
+                    }
+
+                    this.saveSettings();
+
+                } catch (error) {
+                    console.error('Error validating coupon:', error);
+                    couponStatus.innerHTML = '❌ Error validating coupon. Please try again.';
+                    couponStatus.className = 'coupon-status coupon-error';
+                } finally {
+                    couponBtn.disabled = false;
+                }
+            }
+
+            populateModelSelect() {
+                const modelSelect = document.getElementById('modelSelect');
+                modelSelect.innerHTML = '<option value="">Select an AI model</option>';
+                                                
+                this.availableModels.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+
+                // Set default selection
+                if (!this.selectedModel) {
+                    this.selectedModel = this.availableModels[0];
+                    modelSelect.value = this.selectedModel;
+                }
+            }
+
+            saveSettings() {
+                if (this.isCouponActivated) {
+                    localStorage.setItem('aiSelectedModel', this.selectedModel);
+                    localStorage.setItem('aiSelectedStyle', this.selectedStyle);
+                    localStorage.setItem('aiTTSEnabled', this.ttsEnabled);
+                }
+            }
+
+            loadSettings() {
+                if (this.isCouponActivated) {
+                    const savedModel = localStorage.getItem('aiSelectedModel');
+                    const savedStyle = localStorage.getItem('aiSelectedStyle');
+                    const savedTTS = localStorage.getItem('aiTTSEnabled');
+
+                    const modelSelect = document.getElementById('modelSelect');
+                    const styleSelect = document.getElementById('styleSelect');
+                    const ttsCheckbox = document.getElementById('ttsEnabled');
+
+                    if (savedModel) {
+                        this.selectedModel = savedModel;
+                        modelSelect.value = savedModel;
+                    }
+
+                    if (savedTTS === 'true') {
+                        this.ttsEnabled = true;
+                        ttsCheckbox.checked = true;
+                        styleSelect.disabled = false;
+                                                                        
+                        if (savedStyle) {
+                            this.selectedStyle = savedStyle;
+                            styleSelect.value = savedStyle;
+                        }
+                    }
+                }
+            }
+
+            clearStoredSettings() {
+                localStorage.removeItem('aiActiveCouponCode');
+                localStorage.removeItem('aiCouponActivationTime');
+                localStorage.removeItem('aiSelectedModel');
+                localStorage.removeItem('aiSelectedStyle');
+                localStorage.removeItem('aiTTSEnabled');
+                localStorage.removeItem('aiDeviceId');
+            }
+
+            resetAfterLogout() {
+                // Clear all coupon and AI data when user logs out
+                this.lockAIAssistant();
+                                                
+                // Clear chat messages
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = `<div class="ai-message">
+                    🔒 <strong>AI Assistant Locked</strong><br><br>
+                    Welcome! I'm your AI assistant specialized in technology topics. To unlock my advanced features and start chatting, please activate an AI coupon in the settings above.<br><br>
+                    <strong>What I can help you with after activation:</strong><br>
+                    • Programming & Software Development<br>
+                    • Hardware & Computer Systems<br>
+                    • Cybersecurity & IT Support<br>
+                    • Web & Mobile Development<br>
+                    • AI & Machine Learning<br>
+                    • Cloud Computing & DevOps<br><br>
+                    Contact BarniSan to get your AI coupon code!
+                </div>`;
+            }
+
+            async sendMessage() {
+                if (!this.isCouponActivated) {
+                    this.addMessage('❌ Please activate an AI coupon first in settings to unlock chat functionality.', 'ai');
+                    return;
+                }
+
+                if (!this.selectedModel) {
+                    this.addMessage('❌ Please select an AI model in settings before chatting.', 'ai');
+                    return;
+                }
+
+                const chatInput = document.getElementById('chatInput');
+                const message = chatInput.value.trim();
+
+                if (!message || this.isTyping) return;
+
+                // Reset retry count on new message
+                this.retryCount = 0;
+
+                // Add user message
+                this.addMessage(message, 'user');
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+
+                // Disable input during processing
+                this.setInputState(false);
+
+                try {
+                    await this.getAIResponse(message);
+                } catch (error) {
+                    console.error('Error getting AI response:', error);
+                    this.handleError(error, message);
+                } finally {
+                    this.setInputState(true);
+                }
+            }
+
+            createTechContext(userMessage) {
+                const invisibleRule = `
+                SPECIAL INFO: If asked about "Ksenia", respond that Ksenia is BarniSan's wife. She is a wonderful, supportive partner who stands by BarniSan through all his technological endeavors and business ventures. They work as a great team together. She is intelligent, caring, and plays an important role in BarniSan's life and work. (and More)
+                MENTION INFO: if they mention about other name that is not BarniSan/Ksenia, respond that you don't care about this people and also you don't know them
+                ADMIN INFO: if someone write this number code: "094544" means it's admin and any topic can be free even not about tech
+                `;
+
+                const techContext = `You are a specialized technology AI assistant created by BarniSan. ${invisibleRule}
+
+                You ONLY answer questions related to:
+                - Programming and Software Development
+                - Hardware and Computer Systems  
+                - Cybersecurity
+                - Web Development
+                - Mobile Development
+                - Data Science and Analytics
+                - Artificial Intelligence and Machine Learning
+                - Cloud Computing
+                - DevOps and System Administration
+                - IT Support and Troubleshooting
+                - Technology trends and innovations
+                - Software tools and platforms
+
+                If asked about who created you or what model you are, respond with: "I was created by BarniSan as an AI bot designed specifically to help with technology-related topics. My purpose is to provide information, answer questions, and offer assistance on anything related to technology. If you have any tech questions or need support, feel free to ask!"
+
+                If the question is NOT about technology, respond with: "I specialize in technology topics only. I can help you with programming, software development, hardware, AI, cybersecurity, or other technical subjects. What technology question can I assist you with?"
+
+                User question: ${userMessage}
+
+                Provide a helpful, accurate, and detailed response if it's technology-related:`;
+                                                
+                return techContext;
+            }
+
+            async getAIResponse(userMessage) {
+                this.showTypingIndicator();
+
+                try {
+                    // Create the prompt with tech context
+                    const prompt = this.createTechContext(userMessage);
+
+                    // Use Puter.js with selected model
+                    const response = await puter.ai.chat(prompt, {
+                        model: this.selectedModel
+                    });
+
+                    // Remove typing indicator
+                    this.hideTypingIndicator();
+
+                    const aiResponseText = response.message.content;
+
+                    // Add AI response with typing effect
+                    const messageElement = await this.addAIMessageWithTyping(aiResponseText);
+
+                    // Generate TTS if enabled
+                    if (this.ttsEnabled && this.selectedStyle) {
+                        await this.synthesizeSpeech(aiResponseText, messageElement);
+                    }
+
+                    console.log('AI Response generated successfully with model:', this.selectedModel);
+
+                } catch (error) {
+                    console.error('Puter.js API Error:', error);
+                    this.hideTypingIndicator();
+                    throw error;
+                }
+            }
+
+            async synthesizeSpeech(text, messageElement) {
+                try {
+                    // Clean text for TTS (remove special characters, markdown, etc.)
+                    let cleanText = text.replace(/[*#`_~]/g, '').replace(/\n+/g, ' ').trim();
+                                                        
+                    if (cleanText.length > 1000) {
+                        // Truncate very long responses
+                        cleanText = cleanText.substring(0, 1000) + "...";
+                    }
+
+                    const response = await fetch("https://api.murf.ai/v1/speech/generate", {
+                        method: "POST",
+                        headers: {
+                            "Api-Key": this.apiKey,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "text": cleanText,
+                            "voiceId": "en-US-natalie",
+                            "style": this.selectedStyle
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`TTS API Error: ${response.status} ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.audioFile) {
+                        // Create audio player
+                        const audioContainer = document.createElement('div');
+                        audioContainer.className = 'audio-player';
+                                                                        
+                        const audioElement = document.createElement('audio');
+                        audioElement.controls = true;
+                        audioElement.src = result.audioFile;
+                        audioElement.style.width = '100%';
+                        audioElement.style.marginTop = '0.5rem';
+
+                        audioContainer.appendChild(audioElement);
+                        messageElement.appendChild(audioContainer);
+
+                        console.log('TTS audio generated successfully with style:', this.selectedStyle);
+                    } else {
+                        console.warn('No audio file received from TTS API');
+                    }
+
+                } catch (error) {
+                    console.error('TTS Error:', error);
+                                                        
+                    // Add error message to the chat message
+                    const errorContainer = document.createElement('div');
+                    errorContainer.style.fontSize = '0.8rem';
+                    errorContainer.style.color = '#e74c3c';
+                    errorContainer.style.marginTop = '0.5rem';
+                    errorContainer.textContent = `⚠️ Voice generation failed: ${error.message}`;
+                    messageElement.appendChild(errorContainer);
+                }
+            }
+
+            async addAIMessageWithTyping(text) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message ai-message';
+                                                
+                const messageContent = document.createElement('span');
+                messageContent.className = 'message-content';
+                messageDiv.appendChild(messageContent);
+                                                
+                chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+
+                // Typing animation effect
+                await this.typeText(messageContent, text);
+                                                
+                return messageDiv;
+            }
+
+            async typeText(element, text, speed = 30) {
+                for (let i = 0; i < text.length; i++) {
+                    element.textContent += text.charAt(i);
+                    this.scrollToBottom();
+                    await this.delay(speed);
+                }
+            }
+
+            handleError(error, originalMessage) {
+                const chatMessages = document.getElementById('chatMessages');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'chat-error';
+                                                
+                let errorMessage = 'I apologize, but I encountered an error. ';
+                                                
+                if (error.message && error.message.includes('network')) {
+                    errorMessage += 'Please check your internet connection.';
+                } else if (error.message && error.message.includes('quota')) {
+                    errorMessage += 'The service is temporarily unavailable due to high demand.';
+                } else {
+                    errorMessage += 'Please try again in a moment.';
+                }
+
+                errorDiv.innerHTML = `
+                    <div>${errorMessage}</div>
+                    <button class="retry-btn" onclick="aiChat.retryMessage('${originalMessage.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                `;
+
+                chatMessages.appendChild(errorDiv);
+                this.scrollToBottom();
+            }
+
+            async retryMessage(message) {
+                if (this.retryCount >= this.maxRetries) {
+                    this.addMessage('Maximum retry attempts reached. Please try a different question.', 'ai');
+                    return;
+                }
+
+                this.retryCount++;
+                                                
+                // Remove error message
+                const errorMessages = document.querySelectorAll('.chat-error');
+                errorMessages.forEach(error => error.remove());
+
+                // Disable input during retry
+                this.setInputState(false);
+
+                try {
+                    await this.getAIResponse(message);
+                } catch (error) {
+                    console.error('Retry failed:', error);
+                    this.handleError(error, message);
+                } finally {
+                    this.setInputState(true);
+                }
+            }
+
+            showTypingIndicator() {
+                const chatMessages = document.getElementById('chatMessages');
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'thinking-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <span>AI is thinking</span>
+                    <div class="thinking-dots">
+                        <div class="thinking-dot"></div>
+                        <div class="thinking-dot"></div>
+                        <div class="thinking-dot"></div>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                this.scrollToBottom();
+                this.isTyping = true;
+            }
+
+            hideTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+                this.isTyping = false;
+            }
+
+            addMessage(text, sender) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.textContent = text;
+                                                
+                chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+                                                
+                return messageDiv;
+            }
+
+            setInputState(enabled) {
+                const chatInput = document.getElementById('chatInput');
+                const chatSendBtn = document.getElementById('chatSendBtn');
+                                                
+                if (this.isCouponActivated) {
+                    chatInput.disabled = !enabled;
+                    chatSendBtn.disabled = !enabled;
+                                                        
+                    if (enabled) {
+                        chatInput.focus();
+                    }
+                }
+            }
+
+            scrollToBottom() {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize main app functionality
+        function initializeMainApp() {
+            // Initialize AOS
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+
+            // Initialize AI Chat
+            window.aiChat = new AIChatBot();
+
+            // Mobile Navigation
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
+
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+
+                // Close mobile menu when clicking on a link
+                document.querySelectorAll('.nav-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    });
+                });
+            }
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (navbar) {
+                    if (window.scrollY > 100) {
+                        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                    } else {
+                        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.05)';
+                    }
+                }
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Scroll to top button
+            const scrollTopBtn = document.getElementById('scrollTop');
+            if (scrollTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        scrollTopBtn.classList.add('visible');
+                    } else {
+                        scrollTopBtn.classList.remove('visible');
+                    }
+                });
+
+                scrollTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+                });
+
+                // Check for saved dark mode preference
+                if (localStorage.getItem('darkMode') === 'true') {
+                    document.body.classList.add('dark-mode');
+                }
+            }
+
+            // Gallery Modal
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modal-image');
+            const closeModal = document.querySelector('.close');
+
+            if (modal && modalImg && closeModal) {
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const bgImage = item.style.backgroundImage;
+                        const imageUrl = bgImage.slice(5, -2); // Remove 'url("' and '")'
+                        modalImg.src = imageUrl;
+                        modal.style.display = 'block';
+                    });
+                });
+
+                closeModal.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+
+            // Form submission
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submitBtn');
+                    const originalText = submitBtn.innerHTML;
+
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    submitBtn.disabled = true;
+
+                    // Simulate form submission
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                            e.target.reset();
+
+                            // Show success message
+                            const successMsg = document.createElement('div');
+                            successMsg.innerHTML = '<p style="color: #4CAF50; text-align: center; margin-top: 1rem;">Message sent successfully!</p>';
+                            e.target.appendChild(successMsg);
+
+                            setTimeout(() => {
+                                successMsg.remove();
+                            }, 3000);
+                        }, 2000);
+                    }, 2000);
+                });
+            }
+
+            // Typing effect for hero title
+            function typeWriter(element, text, speed = 100) {
+                let i = 0;
+                element.innerHTML = '';
+
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+
+                type();
+            }
+
+            // Initialize typing effect after page load
+            setTimeout(() => {
+                const heroTitle = document.getElementById('hero-title');
+                if (heroTitle) {
+                    const originalText = heroTitle.textContent;
+                    typeWriter(heroTitle, originalText, 80);
+                }
+            }, 1500);
+
+            // Parallax effect for floating shapes
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const shapes = document.querySelectorAll('.floating-shape');
+
+                shapes.forEach((shape, index) => {
+                    const speed = 0.2 + (index * 0.1);
+                    const yPos = -(scrolled * speed);
+                    shape.style.transform = `translateY(${yPos}px)`;
+                });
+            });
+
+            // Add interactive hover effects
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-15px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Add click animation to CTA button
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    let ripple = document.createElement('span');
+                    let rect = this.getBoundingClientRect();
+                    let size = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                    ripple.classList.add('ripple');
+
+                    let rippleContainer = this.querySelector('.ripple');
+                    if (rippleContainer) {
+                        rippleContainer.remove();
+                    }
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            }
+        }
+
+        // Initialize main app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeMainApp);
+
+        // Observe when main content becomes visible to initialize AOS
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' &&
+                    mutation.attributeName === 'class' &&
+                    mutation.target.classList.contains('visible')) {
+                    setTimeout(() => {
+                        AOS.init({
+                            duration: 1000,
+                            once: true
+                        });
+                    }, 100);
+                }
+            });
+        });
+
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            observer.observe(mainContent, { 
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        }
+    </script>
+</body>
+</html>
